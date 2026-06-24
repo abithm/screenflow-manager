@@ -24,14 +24,15 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
-const NAV = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const NAV: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/screens", label: "Screens", icon: MonitorPlay },
   { to: "/media", label: "Media", icon: ImageIcon },
   { to: "/playlists", label: "Playlists", icon: ListMusic },
   { to: "/schedules", label: "Schedules", icon: CalendarClock },
   { to: "/stores", label: "Stores", icon: Store },
-] as const;
+];
 
 export function AppShell({
   children,
