@@ -9,61 +9,290 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedStoresRouteImport } from './routes/_authenticated/stores'
+import { Route as AuthenticatedScreensRouteImport } from './routes/_authenticated/screens'
+import { Route as AuthenticatedSchedulesRouteImport } from './routes/_authenticated/schedules'
+import { Route as AuthenticatedPlaylistsRouteImport } from './routes/_authenticated/playlists'
+import { Route as AuthenticatedMediaRouteImport } from './routes/_authenticated/media'
+import { Route as ApiPublicScreenshotRouteImport } from './routes/api/public/screenshot'
+import { Route as ApiPublicProofOfPlayRouteImport } from './routes/api/public/proof-of-play'
+import { Route as ApiPublicHeartbeatRouteImport } from './routes/api/public/heartbeat'
+import { Route as ApiPublicPlayerDeviceIdRouteImport } from './routes/api/public/player/$deviceId'
 
-const IndexRoute = IndexRouteImport.update({
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedStoresRoute = AuthenticatedStoresRouteImport.update({
+  id: '/stores',
+  path: '/stores',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedScreensRoute = AuthenticatedScreensRouteImport.update({
+  id: '/screens',
+  path: '/screens',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSchedulesRoute = AuthenticatedSchedulesRouteImport.update({
+  id: '/schedules',
+  path: '/schedules',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPlaylistsRoute = AuthenticatedPlaylistsRouteImport.update({
+  id: '/playlists',
+  path: '/playlists',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMediaRoute = AuthenticatedMediaRouteImport.update({
+  id: '/media',
+  path: '/media',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiPublicScreenshotRoute = ApiPublicScreenshotRouteImport.update({
+  id: '/api/public/screenshot',
+  path: '/api/public/screenshot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicProofOfPlayRoute = ApiPublicProofOfPlayRouteImport.update({
+  id: '/api/public/proof-of-play',
+  path: '/api/public/proof-of-play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicHeartbeatRoute = ApiPublicHeartbeatRouteImport.update({
+  id: '/api/public/heartbeat',
+  path: '/api/public/heartbeat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicPlayerDeviceIdRoute = ApiPublicPlayerDeviceIdRouteImport.update({
+  id: '/api/public/player/$deviceId',
+  path: '/api/public/player/$deviceId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
+  '/media': typeof AuthenticatedMediaRoute
+  '/playlists': typeof AuthenticatedPlaylistsRoute
+  '/schedules': typeof AuthenticatedSchedulesRoute
+  '/screens': typeof AuthenticatedScreensRoute
+  '/stores': typeof AuthenticatedStoresRoute
+  '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
+  '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
+  '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/media': typeof AuthenticatedMediaRoute
+  '/playlists': typeof AuthenticatedPlaylistsRoute
+  '/schedules': typeof AuthenticatedSchedulesRoute
+  '/screens': typeof AuthenticatedScreensRoute
+  '/stores': typeof AuthenticatedStoresRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
+  '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
+  '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/media': typeof AuthenticatedMediaRoute
+  '/_authenticated/playlists': typeof AuthenticatedPlaylistsRoute
+  '/_authenticated/schedules': typeof AuthenticatedSchedulesRoute
+  '/_authenticated/screens': typeof AuthenticatedScreensRoute
+  '/_authenticated/stores': typeof AuthenticatedStoresRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
+  '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
+  '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/media'
+    | '/playlists'
+    | '/schedules'
+    | '/screens'
+    | '/stores'
+    | '/api/public/heartbeat'
+    | '/api/public/proof-of-play'
+    | '/api/public/screenshot'
+    | '/api/public/player/$deviceId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/auth'
+    | '/media'
+    | '/playlists'
+    | '/schedules'
+    | '/screens'
+    | '/stores'
+    | '/'
+    | '/api/public/heartbeat'
+    | '/api/public/proof-of-play'
+    | '/api/public/screenshot'
+    | '/api/public/player/$deviceId'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/media'
+    | '/_authenticated/playlists'
+    | '/_authenticated/schedules'
+    | '/_authenticated/screens'
+    | '/_authenticated/stores'
+    | '/_authenticated/'
+    | '/api/public/heartbeat'
+    | '/api/public/proof-of-play'
+    | '/api/public/screenshot'
+    | '/api/public/player/$deviceId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ApiPublicHeartbeatRoute: typeof ApiPublicHeartbeatRoute
+  ApiPublicProofOfPlayRoute: typeof ApiPublicProofOfPlayRoute
+  ApiPublicScreenshotRoute: typeof ApiPublicScreenshotRoute
+  ApiPublicPlayerDeviceIdRoute: typeof ApiPublicPlayerDeviceIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/stores': {
+      id: '/_authenticated/stores'
+      path: '/stores'
+      fullPath: '/stores'
+      preLoaderRoute: typeof AuthenticatedStoresRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/screens': {
+      id: '/_authenticated/screens'
+      path: '/screens'
+      fullPath: '/screens'
+      preLoaderRoute: typeof AuthenticatedScreensRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/schedules': {
+      id: '/_authenticated/schedules'
+      path: '/schedules'
+      fullPath: '/schedules'
+      preLoaderRoute: typeof AuthenticatedSchedulesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/playlists': {
+      id: '/_authenticated/playlists'
+      path: '/playlists'
+      fullPath: '/playlists'
+      preLoaderRoute: typeof AuthenticatedPlaylistsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/media': {
+      id: '/_authenticated/media'
+      path: '/media'
+      fullPath: '/media'
+      preLoaderRoute: typeof AuthenticatedMediaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/screenshot': {
+      id: '/api/public/screenshot'
+      path: '/api/public/screenshot'
+      fullPath: '/api/public/screenshot'
+      preLoaderRoute: typeof ApiPublicScreenshotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/proof-of-play': {
+      id: '/api/public/proof-of-play'
+      path: '/api/public/proof-of-play'
+      fullPath: '/api/public/proof-of-play'
+      preLoaderRoute: typeof ApiPublicProofOfPlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/heartbeat': {
+      id: '/api/public/heartbeat'
+      path: '/api/public/heartbeat'
+      fullPath: '/api/public/heartbeat'
+      preLoaderRoute: typeof ApiPublicHeartbeatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/player/$deviceId': {
+      id: '/api/public/player/$deviceId'
+      path: '/api/public/player/$deviceId'
+      fullPath: '/api/public/player/$deviceId'
+      preLoaderRoute: typeof ApiPublicPlayerDeviceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMediaRoute: typeof AuthenticatedMediaRoute
+  AuthenticatedPlaylistsRoute: typeof AuthenticatedPlaylistsRoute
+  AuthenticatedSchedulesRoute: typeof AuthenticatedSchedulesRoute
+  AuthenticatedScreensRoute: typeof AuthenticatedScreensRoute
+  AuthenticatedStoresRoute: typeof AuthenticatedStoresRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMediaRoute: AuthenticatedMediaRoute,
+  AuthenticatedPlaylistsRoute: AuthenticatedPlaylistsRoute,
+  AuthenticatedSchedulesRoute: AuthenticatedSchedulesRoute,
+  AuthenticatedScreensRoute: AuthenticatedScreensRoute,
+  AuthenticatedStoresRoute: AuthenticatedStoresRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ApiPublicHeartbeatRoute: ApiPublicHeartbeatRoute,
+  ApiPublicProofOfPlayRoute: ApiPublicProofOfPlayRoute,
+  ApiPublicScreenshotRoute: ApiPublicScreenshotRoute,
+  ApiPublicPlayerDeviceIdRoute: ApiPublicPlayerDeviceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
