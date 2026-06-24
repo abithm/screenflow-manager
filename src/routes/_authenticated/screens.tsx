@@ -41,7 +41,7 @@ function ScreensPage() {
   const isOn = (ls: string | null) => !!ls && Date.now() - new Date(ls).getTime() < 2 * 60 * 1000;
 
   const update = useMutation({
-    mutationFn: async ({ id, patch }: { id: string; patch: Record<string, unknown> }) => {
+    mutationFn: async ({ id, patch }: { id: string; patch: { store_id?: string | null; current_playlist_id?: string | null } }) => {
       const { error } = await supabase.from("screens").update(patch).eq("id", id);
       if (error) throw error;
     },
