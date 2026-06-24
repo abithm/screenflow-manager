@@ -17,6 +17,10 @@ import { Route as AuthenticatedScreensRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSchedulesRouteImport } from './routes/_authenticated/schedules'
 import { Route as AuthenticatedPlaylistsRouteImport } from './routes/_authenticated/playlists'
 import { Route as AuthenticatedMediaRouteImport } from './routes/_authenticated/media'
+import { Route as ApiPublicScreenshotRouteImport } from './routes/api/public/screenshot'
+import { Route as ApiPublicProofOfPlayRouteImport } from './routes/api/public/proof-of-play'
+import { Route as ApiPublicHeartbeatRouteImport } from './routes/api/public/heartbeat'
+import { Route as ApiPublicPlayerDeviceIdRouteImport } from './routes/api/public/player/$deviceId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -57,6 +61,26 @@ const AuthenticatedMediaRoute = AuthenticatedMediaRouteImport.update({
   path: '/media',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicScreenshotRoute = ApiPublicScreenshotRouteImport.update({
+  id: '/api/public/screenshot',
+  path: '/api/public/screenshot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicProofOfPlayRoute = ApiPublicProofOfPlayRouteImport.update({
+  id: '/api/public/proof-of-play',
+  path: '/api/public/proof-of-play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicHeartbeatRoute = ApiPublicHeartbeatRouteImport.update({
+  id: '/api/public/heartbeat',
+  path: '/api/public/heartbeat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicPlayerDeviceIdRoute = ApiPublicPlayerDeviceIdRouteImport.update({
+  id: '/api/public/player/$deviceId',
+  path: '/api/public/player/$deviceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -66,6 +90,10 @@ export interface FileRoutesByFullPath {
   '/schedules': typeof AuthenticatedSchedulesRoute
   '/screens': typeof AuthenticatedScreensRoute
   '/stores': typeof AuthenticatedStoresRoute
+  '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
+  '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
+  '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
@@ -75,6 +103,10 @@ export interface FileRoutesByTo {
   '/screens': typeof AuthenticatedScreensRoute
   '/stores': typeof AuthenticatedStoresRoute
   '/': typeof AuthenticatedIndexRoute
+  '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
+  '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
+  '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,6 +118,10 @@ export interface FileRoutesById {
   '/_authenticated/screens': typeof AuthenticatedScreensRoute
   '/_authenticated/stores': typeof AuthenticatedStoresRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
+  '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
+  '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,6 +133,10 @@ export interface FileRouteTypes {
     | '/schedules'
     | '/screens'
     | '/stores'
+    | '/api/public/heartbeat'
+    | '/api/public/proof-of-play'
+    | '/api/public/screenshot'
+    | '/api/public/player/$deviceId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -106,6 +146,10 @@ export interface FileRouteTypes {
     | '/screens'
     | '/stores'
     | '/'
+    | '/api/public/heartbeat'
+    | '/api/public/proof-of-play'
+    | '/api/public/screenshot'
+    | '/api/public/player/$deviceId'
   id:
     | '__root__'
     | '/_authenticated'
@@ -116,11 +160,19 @@ export interface FileRouteTypes {
     | '/_authenticated/screens'
     | '/_authenticated/stores'
     | '/_authenticated/'
+    | '/api/public/heartbeat'
+    | '/api/public/proof-of-play'
+    | '/api/public/screenshot'
+    | '/api/public/player/$deviceId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicHeartbeatRoute: typeof ApiPublicHeartbeatRoute
+  ApiPublicProofOfPlayRoute: typeof ApiPublicProofOfPlayRoute
+  ApiPublicScreenshotRoute: typeof ApiPublicScreenshotRoute
+  ApiPublicPlayerDeviceIdRoute: typeof ApiPublicPlayerDeviceIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -181,6 +233,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMediaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/screenshot': {
+      id: '/api/public/screenshot'
+      path: '/api/public/screenshot'
+      fullPath: '/api/public/screenshot'
+      preLoaderRoute: typeof ApiPublicScreenshotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/proof-of-play': {
+      id: '/api/public/proof-of-play'
+      path: '/api/public/proof-of-play'
+      fullPath: '/api/public/proof-of-play'
+      preLoaderRoute: typeof ApiPublicProofOfPlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/heartbeat': {
+      id: '/api/public/heartbeat'
+      path: '/api/public/heartbeat'
+      fullPath: '/api/public/heartbeat'
+      preLoaderRoute: typeof ApiPublicHeartbeatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/player/$deviceId': {
+      id: '/api/public/player/$deviceId'
+      path: '/api/public/player/$deviceId'
+      fullPath: '/api/public/player/$deviceId'
+      preLoaderRoute: typeof ApiPublicPlayerDeviceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -208,6 +288,10 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicHeartbeatRoute: ApiPublicHeartbeatRoute,
+  ApiPublicProofOfPlayRoute: ApiPublicProofOfPlayRoute,
+  ApiPublicScreenshotRoute: ApiPublicScreenshotRoute,
+  ApiPublicPlayerDeviceIdRoute: ApiPublicPlayerDeviceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
