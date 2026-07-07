@@ -1,13 +1,15 @@
 import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { ensureDemoAccount } from "@/lib/demo-auth.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Radio } from "lucide-react";
+import { Radio, ShieldCheck, User } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
