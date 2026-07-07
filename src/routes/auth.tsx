@@ -27,6 +27,26 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [demoLoading, setDemoLoading] = useState<"admin" | "user" | null>(null);
+  const provisionDemo = useServerFn(ensureDemoAccount);
+
+  const demoLogin = async (kind: "admin" | "user") => {
+    setDemoLoading(kind);
+    try {
+      const creds = await provisionDemo({ data: { kind } });
+      const { error } = await supabase.auth.signInWithPassword({
+        email: creds.email,
+        password: creds.password,
+      });
+      if (error) throw error;
+      toast.success(`Signed in as demo ${kind}`);
+      navigate({ to: "/" });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Demo sign-in failed");
+    } finally {
+      setDemoLoading(null);
+    }
+  };
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
