@@ -71,6 +71,44 @@ export type Database = {
         }
         Relationships: []
       }
+      pairing_events: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          device_id: string
+          id: string
+          screen_id: string | null
+          screen_name: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          device_id: string
+          id?: string
+          screen_id?: string | null
+          screen_name?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          device_id?: string
+          id?: string
+          screen_id?: string | null
+          screen_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pairing_events_screen_id_fkey"
+            columns: ["screen_id"]
+            isOneToOne: false
+            referencedRelation: "screens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       playlist_items: {
         Row: {
           created_at: string

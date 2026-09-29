@@ -140,7 +140,52 @@ function ScreensPage() {
           </Card>
         )}
       </div>
+      <PairingHistory />
     </AppShell>
+  );
+}
+
+function PairingHistory() {
+  const { data: events = [] } = useQuery({
+    queryKey: ["pairing-events"],
+    queryFn: async () => {
+      const { data } = await supabase.from("pairing_events").select("*").order("created_at", { ascending: false }).limit(50);
+      const ids = [...new Set((data ?? []).map((e) => e.actor_id).filter(Boolean))] as string[];
+      const { data: profs } = ids.length
+        ? await supabase.from("profiles").select("id, display_name, email").in("id", ids)
+        : { data: [] as { id: string; display_name: string | null; email: string | null }[] };
+      const map = new Map((profs ?? []).map((p) => [p.id, p.display_name || p.email]));
+      return (data ?? []).map((e) => ({ ...e, actor: e.actor_id ? map.get(e.actor_id) ?? "Unknown" : "System" }));
+    },
+    refetchInterval: 15000,
+  });
+  return (
+    <Card className="mt-8 p-5">
+      <h2 className="font-display text-lg mb-3">Pairing activity</h2>
+      {events.length ? (
+        <table className="w-full text-sm">
+          <thead className="text-xs text-muted-foreground text-left">
+            <tr><th className="py-2">When</th><th>Screen</th><th>Action</th><th>By</th></tr>
+          </thead>
+          <tbody>
+            {events.map((e) => (
+              <tr key={e.id} className="border-t border-border">
+                <td className="py-2 text-muted-foreground">{formatDistanceToNow(new Date(e.created_at), { addSuffix: true })}</td>
+                <td><div>{e.screen_name}</div><div className="text-xs text-muted-foreground font-mono">{e.device_id}</div></td>
+                <td>
+                  <span className={`text-xs rounded px-2 py-0.5 ${e.action === "paired" ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"}`}>
+                    {e.action}
+                  </span>
+                </td>
+                <td>{e.actor}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p className="text-sm text-muted-foreground">No pairing activity yet.</p>
+      )}
+    </Card>
   );
 }
 
