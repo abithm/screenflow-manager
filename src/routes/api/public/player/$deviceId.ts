@@ -41,8 +41,9 @@ export const Route = createFileRoute("/api/public/player/$deviceId")({
           url: (it.media as any)?.file_url ?? "",
           duration: it.display_duration,
         }));
-        const version = (screen?.playlists as any)?.version ?? 1;
-        return Response.json({ version, playlist });
+        const version = (screen.playlists as any)?.version ?? 1;
+        return Response.json({ paired: true, status: "playing", version, playlist });
+
       },
     },
   },
