@@ -240,7 +240,11 @@ export type Database = {
           current_playlist_id: string | null
           device_id: string
           id: string
+          is_paired: boolean
           last_seen: string | null
+          paired_at: string | null
+          pairing_code: string | null
+          pairing_code_expires_at: string | null
           screen_name: string
           screenshot_url: string | null
           status: Database["public"]["Enums"]["screen_status"]
@@ -253,7 +257,11 @@ export type Database = {
           current_playlist_id?: string | null
           device_id: string
           id?: string
+          is_paired?: boolean
           last_seen?: string | null
+          paired_at?: string | null
+          pairing_code?: string | null
+          pairing_code_expires_at?: string | null
           screen_name: string
           screenshot_url?: string | null
           status?: Database["public"]["Enums"]["screen_status"]
@@ -266,7 +274,11 @@ export type Database = {
           current_playlist_id?: string | null
           device_id?: string
           id?: string
+          is_paired?: boolean
           last_seen?: string | null
+          paired_at?: string | null
+          pairing_code?: string | null
+          pairing_code_expires_at?: string | null
           screen_name?: string
           screenshot_url?: string | null
           status?: Database["public"]["Enums"]["screen_status"]

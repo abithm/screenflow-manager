@@ -21,6 +21,8 @@ import { Route as ApiPublicScreenshotRouteImport } from './routes/api/public/scr
 import { Route as ApiPublicProofOfPlayRouteImport } from './routes/api/public/proof-of-play'
 import { Route as ApiPublicHeartbeatRouteImport } from './routes/api/public/heartbeat'
 import { Route as ApiPublicPlayerDeviceIdRouteImport } from './routes/api/public/player/$deviceId'
+import { Route as ApiPublicPairStatusRouteImport } from './routes/api/public/pair/status'
+import { Route as ApiPublicPairRequestRouteImport } from './routes/api/public/pair/request'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -81,6 +83,16 @@ const ApiPublicPlayerDeviceIdRoute = ApiPublicPlayerDeviceIdRouteImport.update({
   path: '/api/public/player/$deviceId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPairStatusRoute = ApiPublicPairStatusRouteImport.update({
+  id: '/api/public/pair/status',
+  path: '/api/public/pair/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicPairRequestRoute = ApiPublicPairRequestRouteImport.update({
+  id: '/api/public/pair/request',
+  path: '/api/public/pair/request',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -93,6 +105,8 @@ export interface FileRoutesByFullPath {
   '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
   '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
   '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/pair/request': typeof ApiPublicPairRequestRoute
+  '/api/public/pair/status': typeof ApiPublicPairStatusRoute
   '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRoutesByTo {
@@ -106,6 +120,8 @@ export interface FileRoutesByTo {
   '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
   '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
   '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/pair/request': typeof ApiPublicPairRequestRoute
+  '/api/public/pair/status': typeof ApiPublicPairStatusRoute
   '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRoutesById {
@@ -121,6 +137,8 @@ export interface FileRoutesById {
   '/api/public/heartbeat': typeof ApiPublicHeartbeatRoute
   '/api/public/proof-of-play': typeof ApiPublicProofOfPlayRoute
   '/api/public/screenshot': typeof ApiPublicScreenshotRoute
+  '/api/public/pair/request': typeof ApiPublicPairRequestRoute
+  '/api/public/pair/status': typeof ApiPublicPairStatusRoute
   '/api/public/player/$deviceId': typeof ApiPublicPlayerDeviceIdRoute
 }
 export interface FileRouteTypes {
@@ -136,6 +154,8 @@ export interface FileRouteTypes {
     | '/api/public/heartbeat'
     | '/api/public/proof-of-play'
     | '/api/public/screenshot'
+    | '/api/public/pair/request'
+    | '/api/public/pair/status'
     | '/api/public/player/$deviceId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -149,6 +169,8 @@ export interface FileRouteTypes {
     | '/api/public/heartbeat'
     | '/api/public/proof-of-play'
     | '/api/public/screenshot'
+    | '/api/public/pair/request'
+    | '/api/public/pair/status'
     | '/api/public/player/$deviceId'
   id:
     | '__root__'
@@ -163,6 +185,8 @@ export interface FileRouteTypes {
     | '/api/public/heartbeat'
     | '/api/public/proof-of-play'
     | '/api/public/screenshot'
+    | '/api/public/pair/request'
+    | '/api/public/pair/status'
     | '/api/public/player/$deviceId'
   fileRoutesById: FileRoutesById
 }
@@ -172,6 +196,8 @@ export interface RootRouteChildren {
   ApiPublicHeartbeatRoute: typeof ApiPublicHeartbeatRoute
   ApiPublicProofOfPlayRoute: typeof ApiPublicProofOfPlayRoute
   ApiPublicScreenshotRoute: typeof ApiPublicScreenshotRoute
+  ApiPublicPairRequestRoute: typeof ApiPublicPairRequestRoute
+  ApiPublicPairStatusRoute: typeof ApiPublicPairStatusRoute
   ApiPublicPlayerDeviceIdRoute: typeof ApiPublicPlayerDeviceIdRoute
 }
 
@@ -261,6 +287,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPlayerDeviceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/pair/status': {
+      id: '/api/public/pair/status'
+      path: '/api/public/pair/status'
+      fullPath: '/api/public/pair/status'
+      preLoaderRoute: typeof ApiPublicPairStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/pair/request': {
+      id: '/api/public/pair/request'
+      path: '/api/public/pair/request'
+      fullPath: '/api/public/pair/request'
+      preLoaderRoute: typeof ApiPublicPairRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -291,6 +331,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicHeartbeatRoute: ApiPublicHeartbeatRoute,
   ApiPublicProofOfPlayRoute: ApiPublicProofOfPlayRoute,
   ApiPublicScreenshotRoute: ApiPublicScreenshotRoute,
+  ApiPublicPairRequestRoute: ApiPublicPairRequestRoute,
+  ApiPublicPairStatusRoute: ApiPublicPairStatusRoute,
   ApiPublicPlayerDeviceIdRoute: ApiPublicPlayerDeviceIdRoute,
 }
 export const routeTree = rootRouteImport
