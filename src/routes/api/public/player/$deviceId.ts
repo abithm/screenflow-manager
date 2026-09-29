@@ -13,26 +13,22 @@ export const Route = createFileRoute("/api/public/player/$deviceId")({
     handlers: {
       GET: async ({ params }) => {
         const supabase = admin();
-        let { data: screen } = await supabase
+        const { data: screen } = await supabase
           .from("screens")
-          .select("id, current_playlist_id, playlists(id, version)")
+          .select("id, is_paired, current_playlist_id, playlists(id, version)")
           .eq("device_id", params.deviceId)
           .maybeSingle();
 
-        // Auto-register unknown device.
-        if (!screen) {
-          const { data: inserted } = await supabase
-            .from("screens")
-            .insert({ device_id: params.deviceId, screen_name: `New device ${params.deviceId.slice(0, 6)}`, status: "unknown" })
-            .select("id, current_playlist_id, playlists(id, version)")
-            .single();
-          screen = inserted;
+        // Unknown or unpaired device: send it back to the pairing screen.
+        if (!screen || !screen.is_paired) {
+          return Response.json({ paired: false, action: "reset_to_pairing", version: 0, playlist: [] });
         }
 
-        const playlistId = screen?.current_playlist_id;
+        const playlistId = screen.current_playlist_id;
         if (!playlistId) {
-          return Response.json({ version: 0, playlist: [] });
+          return Response.json({ paired: true, status: "ready", version: 0, playlist: [] });
         }
+
 
         const { data: items } = await supabase
           .from("playlist_items")
