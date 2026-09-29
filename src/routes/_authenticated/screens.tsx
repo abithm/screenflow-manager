@@ -144,6 +144,95 @@ function ScreensPage() {
   );
 }
 
+function PairScreenDialog() {
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [pin, setPin] = useState("");
+  const [name, setName] = useState("");
+  const [storeId, setStoreId] = useState("none");
+
+  const { data: stores = [] } = useQuery({
+    queryKey: ["stores"],
+    queryFn: async () => (await supabase.from("stores").select("id,name").order("name")).data ?? [],
+  });
+
+  const digits = pin.replace(/\D/g, "").slice(0, 6);
+  const pretty = digits.length > 3 ? `${digits.slice(0, 3)}-${digits.slice(3)}` : digits;
+
+  const pair = useMutation({
+    mutationFn: async () => {
+      const { data: match, error } = await supabase
+        .from("screens")
+        .select("id, screen_name, pairing_code_expires_at, is_paired")
+        .eq("pairing_code", digits)
+        .maybeSingle();
+      if (error) throw error;
+      if (!match || match.is_paired) throw new Error("That PIN is not valid. Check the code on the screen.");
+      if (!match.pairing_code_expires_at || new Date(match.pairing_code_expires_at).getTime() <= Date.now()) {
+        throw new Error("That PIN has expired. The screen will show a new one shortly.");
+      }
+      const { error: upErr } = await supabase
+        .from("screens")
+        .update({
+          is_paired: true,
+          paired_at: new Date().toISOString(),
+          pairing_code: null,
+          pairing_code_expires_at: null,
+          screen_name: name || match.screen_name,
+          store_id: storeId === "none" ? null : storeId,
+        })
+        .eq("id", match.id);
+      if (upErr) throw upErr;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["screens"] });
+      setOpen(false); setPin(""); setName(""); setStoreId("none");
+      toast.success("Screen paired");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" variant="secondary"><Link2 className="h-4 w-4 mr-1" /> Pair screen</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader><DialogTitle>Pair a new screen</DialogTitle></DialogHeader>
+        <div className="space-y-3">
+          <div>
+            <Label>6-digit code shown on the TV</Label>
+            <Input
+              value={pretty}
+              onChange={(e) => setPin(e.target.value)}
+              inputMode="numeric"
+              placeholder="482-910"
+              className="text-center text-2xl tracking-[0.3em] font-mono h-14"
+            />
+          </div>
+          <div><Label>Screen name</Label><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Front Entrance TV" /></div>
+          <div>
+            <Label>Store</Label>
+            <Select value={storeId} onValueChange={setStoreId}>
+              <SelectTrigger><SelectValue placeholder="Select store" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">No store</SelectItem>
+                {stores.map((st) => <SelectItem key={st.id} value={st.id}>{st.name}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button onClick={() => pair.mutate()} disabled={digits.length !== 6 || pair.isPending}>
+            {pair.isPending ? "Pairing…" : "Pair screen"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+
 function RegisterScreenDialog() {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
