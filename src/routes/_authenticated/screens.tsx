@@ -83,7 +83,15 @@ function ScreensPage() {
                   <div className="font-medium truncate">{s.screen_name}</div>
                   <div className="text-xs text-muted-foreground font-mono">{s.device_id}</div>
                 </div>
-                <StatusPill online={on} />
+                <div className="flex flex-col items-end gap-1">
+                  <StatusPill online={on} />
+                  {!s.is_paired && (
+                    <span className="text-[10px] uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-500/15 text-amber-500">
+                      {s.pairing_code ? `PIN ${s.pairing_code.slice(0, 3)}-${s.pairing_code.slice(3)}` : "Unpaired"}
+                    </span>
+                  )}
+                </div>
+
               </div>
               <div className="aspect-video bg-muted rounded-md mb-3 flex items-center justify-center overflow-hidden">
                 {s.screenshot_url
