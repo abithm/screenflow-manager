@@ -105,7 +105,8 @@ function ScreensPage() {
                 <dt>App</dt><dd className="text-foreground text-right font-mono">{s.app_version ?? "—"}</dd>
               </dl>
               {isAdmin && (
-                <div className="mt-4 grid grid-cols-2 gap-2">
+                <div className="mt-4 space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
                   <Select value={s.store_id ?? "none"} onValueChange={(v) => update.mutate({ id: s.id, patch: { store_id: v === "none" ? null : v } })}>
                     <SelectTrigger className="h-8 text-xs"><SelectValue placeholder="Store" /></SelectTrigger>
                     <SelectContent>
@@ -120,8 +121,16 @@ function ScreensPage() {
                       {playlists.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
+                  </div>
+                  {s.is_paired && (
+                    <Button variant="ghost" size="sm" className="h-7 w-full text-xs text-muted-foreground"
+                      onClick={() => unpair.mutate(s.id)} disabled={unpair.isPending}>
+                      <Unlink className="h-3.5 w-3.5 mr-1" /> Unpair screen
+                    </Button>
+                  )}
                 </div>
               )}
+
             </Card>
           );
         })}
