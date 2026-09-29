@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
-import { Plus, MonitorPlay } from "lucide-react";
+import { Plus, MonitorPlay, Link2, Unlink } from "lucide-react";
 import { StatusPill } from "./index";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
@@ -49,12 +49,30 @@ function ScreensPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const unpair = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("screens")
+        .update({ is_paired: false, paired_at: null, pairing_code: null, pairing_code_expires_at: null, current_playlist_id: null })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["screens"] }); toast.success("Screen unpaired — it will show a new PIN"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   return (
     <AppShell
       title="Screens"
       description={`${screens.length} devices`}
-      actions={isAdmin && <RegisterScreenDialog />}
+      actions={isAdmin && (
+        <div className="flex gap-2">
+          <PairScreenDialog />
+          <RegisterScreenDialog />
+        </div>
+      )}
     >
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {screens.map((s) => {
           const on = isOn(s.last_seen);
