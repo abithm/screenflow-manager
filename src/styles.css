@@ -139,11 +139,10 @@
   }
 }
 
-/* Status dot utility */
+/* Status dot utility — flat, no glow */
 @utility status-dot {
   display: inline-block;
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 9999px;
-  box-shadow: 0 0 0 3px color-mix(in oklab, currentColor 20%, transparent);
 }
