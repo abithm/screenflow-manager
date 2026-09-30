@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, redirect, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -188,6 +188,14 @@ function AuthPage() {
 
         <p className="text-xs text-muted-foreground text-center mt-6">
           New accounts get the Viewer role. Ask a Super Admin to elevate.
+        </p>
+        <p className="text-xs text-muted-foreground text-center mt-3 space-x-4">
+          <Link to="/install" className="hover:text-foreground hover:underline">
+            Install the TV player
+          </Link>
+          <Link to="/privacy" className="hover:text-foreground hover:underline">
+            Privacy policy
+          </Link>
         </p>
       </div>
     </div>
