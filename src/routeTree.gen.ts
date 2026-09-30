@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TvRouteImport } from './routes/tv'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
@@ -24,6 +25,11 @@ import { Route as ApiPublicPlayerDeviceIdRouteImport } from './routes/api/public
 import { Route as ApiPublicPairStatusRouteImport } from './routes/api/public/pair/status'
 import { Route as ApiPublicPairRequestRouteImport } from './routes/api/public/pair/request'
 
+const TvRoute = TvRouteImport.update({
+  id: '/tv',
+  path: '/tv',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -97,6 +103,7 @@ const ApiPublicPairRequestRoute = ApiPublicPairRequestRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
+  '/tv': typeof TvRoute
   '/media': typeof AuthenticatedMediaRoute
   '/playlists': typeof AuthenticatedPlaylistsRoute
   '/schedules': typeof AuthenticatedSchedulesRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
+  '/tv': typeof TvRoute
   '/media': typeof AuthenticatedMediaRoute
   '/playlists': typeof AuthenticatedPlaylistsRoute
   '/schedules': typeof AuthenticatedSchedulesRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/tv': typeof TvRoute
   '/_authenticated/media': typeof AuthenticatedMediaRoute
   '/_authenticated/playlists': typeof AuthenticatedPlaylistsRoute
   '/_authenticated/schedules': typeof AuthenticatedSchedulesRoute
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/tv'
     | '/media'
     | '/playlists'
     | '/schedules'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
+    | '/tv'
     | '/media'
     | '/playlists'
     | '/schedules'
@@ -176,6 +187,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/auth'
+    | '/tv'
     | '/_authenticated/media'
     | '/_authenticated/playlists'
     | '/_authenticated/schedules'
@@ -193,6 +205,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  TvRoute: typeof TvRoute
   ApiPublicHeartbeatRoute: typeof ApiPublicHeartbeatRoute
   ApiPublicProofOfPlayRoute: typeof ApiPublicProofOfPlayRoute
   ApiPublicScreenshotRoute: typeof ApiPublicScreenshotRoute
@@ -203,6 +216,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tv': {
+      id: '/tv'
+      path: '/tv'
+      fullPath: '/tv'
+      preLoaderRoute: typeof TvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -328,6 +348,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  TvRoute: TvRoute,
   ApiPublicHeartbeatRoute: ApiPublicHeartbeatRoute,
   ApiPublicProofOfPlayRoute: ApiPublicProofOfPlayRoute,
   ApiPublicScreenshotRoute: ApiPublicScreenshotRoute,
