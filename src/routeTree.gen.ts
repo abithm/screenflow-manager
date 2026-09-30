@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TvRouteImport } from './routes/tv'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as InstallRouteImport } from './routes/install'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
@@ -28,6 +30,16 @@ import { Route as ApiPublicPairRequestRouteImport } from './routes/api/public/pa
 const TvRoute = TvRouteImport.update({
   id: '/tv',
   path: '/tv',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InstallRoute = InstallRouteImport.update({
+  id: '/install',
+  path: '/install',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -103,6 +115,8 @@ const ApiPublicPairRequestRoute = ApiPublicPairRequestRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
+  '/install': typeof InstallRoute
+  '/privacy': typeof PrivacyRoute
   '/tv': typeof TvRoute
   '/media': typeof AuthenticatedMediaRoute
   '/playlists': typeof AuthenticatedPlaylistsRoute
@@ -118,6 +132,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
+  '/install': typeof InstallRoute
+  '/privacy': typeof PrivacyRoute
   '/tv': typeof TvRoute
   '/media': typeof AuthenticatedMediaRoute
   '/playlists': typeof AuthenticatedPlaylistsRoute
@@ -136,6 +152,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/install': typeof InstallRoute
+  '/privacy': typeof PrivacyRoute
   '/tv': typeof TvRoute
   '/_authenticated/media': typeof AuthenticatedMediaRoute
   '/_authenticated/playlists': typeof AuthenticatedPlaylistsRoute
@@ -155,6 +173,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/install'
+    | '/privacy'
     | '/tv'
     | '/media'
     | '/playlists'
@@ -170,6 +190,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
+    | '/install'
+    | '/privacy'
     | '/tv'
     | '/media'
     | '/playlists'
@@ -187,6 +209,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/auth'
+    | '/install'
+    | '/privacy'
     | '/tv'
     | '/_authenticated/media'
     | '/_authenticated/playlists'
@@ -205,6 +229,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  InstallRoute: typeof InstallRoute
+  PrivacyRoute: typeof PrivacyRoute
   TvRoute: typeof TvRoute
   ApiPublicHeartbeatRoute: typeof ApiPublicHeartbeatRoute
   ApiPublicProofOfPlayRoute: typeof ApiPublicProofOfPlayRoute
@@ -221,6 +247,20 @@ declare module '@tanstack/react-router' {
       path: '/tv'
       fullPath: '/tv'
       preLoaderRoute: typeof TvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/install': {
+      id: '/install'
+      path: '/install'
+      fullPath: '/install'
+      preLoaderRoute: typeof InstallRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -348,6 +388,8 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  InstallRoute: InstallRoute,
+  PrivacyRoute: PrivacyRoute,
   TvRoute: TvRoute,
   ApiPublicHeartbeatRoute: ApiPublicHeartbeatRoute,
   ApiPublicProofOfPlayRoute: ApiPublicProofOfPlayRoute,
