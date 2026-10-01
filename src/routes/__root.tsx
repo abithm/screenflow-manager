@@ -76,7 +76,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Signal — Digital Signage Console" },
       { name: "description", content: "Cloud-based CMS for managing displays across stores." },
-      { name: "theme-color", content: "#0f1b3d" },
+      { name: "theme-color", content: "#151619" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
