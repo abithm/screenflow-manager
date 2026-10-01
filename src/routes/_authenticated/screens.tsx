@@ -86,7 +86,7 @@ function ScreensPage() {
                 <div className="flex flex-col items-end gap-1">
                   <StatusPill online={on} />
                   {!s.is_paired && (
-                    <span className="text-[10px] uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-500/15 text-amber-500">
+                    <span className="rounded bg-warning/15 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-warning">
                       {s.pairing_code ? `PIN ${s.pairing_code.slice(0, 3)}-${s.pairing_code.slice(3)}` : "Unpaired"}
                     </span>
                   )}
