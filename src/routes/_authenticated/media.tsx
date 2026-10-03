@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Upload, Trash2, Film, Image as ImageIcon, FileText, Link as LinkIcon, Loader2 } from "lucide-react";
@@ -18,6 +19,48 @@ export const Route = createFileRoute("/_authenticated/media")({
 });
 
 const TYPE_ICON: Record<string, typeof Film> = { video: Film, image: ImageIcon, pdf: FileText, url: LinkIcon };
+
+async function uploadMediaFile(path: string, file: File, onProgress: (percentage: number) => void) {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  const { data } = await supabase.auth.getSession();
+  const accessToken = data.session?.access_token;
+
+  if (!supabaseUrl || !publishableKey || !accessToken) {
+    throw new Error("Your session has expired. Sign in again to upload media.");
+  }
+
+  const encodedPath = path.split("/").map(encodeURIComponent).join("/");
+
+  await new Promise<void>((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open("POST", `${supabaseUrl}/storage/v1/object/media/${encodedPath}`);
+    request.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+    request.setRequestHeader("apikey", publishableKey);
+    request.setRequestHeader("Content-Type", file.type || "application/octet-stream");
+    request.setRequestHeader("x-upsert", "false");
+
+    request.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
+    };
+    request.onerror = () => reject(new Error("Upload failed. Check your connection and try again."));
+    request.onload = () => {
+      if (request.status >= 200 && request.status < 300) {
+        onProgress(100);
+        resolve();
+        return;
+      }
+
+      try {
+        const response = JSON.parse(request.responseText) as { message?: string; error?: string };
+        reject(new Error(response.message ?? response.error ?? "Upload failed"));
+      } catch {
+        reject(new Error(request.responseText || "Upload failed"));
+      }
+    };
+    request.send(file);
+  });
+}
 
 function MediaPage() {
   const { isAdmin, user } = useAuth();
@@ -87,6 +130,7 @@ function UploadDialog({ userId }: { userId?: string }) {
   const [url, setUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
   const submit = async () => {
     if (!title) return toast.error("Title required");
@@ -97,8 +141,8 @@ function UploadDialog({ userId }: { userId?: string }) {
       let finalType = type;
       if (tab === "file" && file) {
         const path = `${userId ?? "anon"}/${Date.now()}-${file.name}`;
-        const { error: upErr } = await supabase.storage.from("media").upload(path, file, { upsert: false });
-        if (upErr) throw upErr;
+        setUploadProgress(0);
+        await uploadMediaFile(path, file, setUploadProgress);
         file_url = `media:${path}`;
         file_size = file.size;
         finalType = file.type.startsWith("video") ? "video" : file.type === "application/pdf" ? "pdf" : "image";
@@ -108,10 +152,10 @@ function UploadDialog({ userId }: { userId?: string }) {
       if (error) throw error;
       qc.invalidateQueries({ queryKey: ["media"] });
       toast.success("Added");
-      setOpen(false); setTitle(""); setUrl(""); setFile(null);
+      setOpen(false); setTitle(""); setUrl(""); setFile(null); setUploadProgress(null);
     } catch (e) {
       toast.error((e as Error).message);
-    } finally { setBusy(false); }
+    } finally { setBusy(false); setUploadProgress(null); }
   };
 
   return (
@@ -130,6 +174,15 @@ function UploadDialog({ userId }: { userId?: string }) {
               <Label>File</Label>
               <Input type="file" accept="image/*,video/*,application/pdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
               <p className="text-xs text-muted-foreground mt-1">Stored in your media bucket. Type auto-detected.</p>
+              {uploadProgress !== null && (
+                <div className="mt-4 space-y-2" aria-live="polite">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Uploading {file?.name}</span>
+                    <span className="font-medium tabular-nums">{uploadProgress}%</span>
+                  </div>
+                  <Progress value={uploadProgress} aria-label={`Upload progress: ${uploadProgress}%`} className="rounded-none" />
+                </div>
+              )}
             </div>
           ) : (
             <>
@@ -150,7 +203,7 @@ function UploadDialog({ userId }: { userId?: string }) {
           )}
         </div>
         <DialogFooter>
-          <Button onClick={submit} disabled={busy}>{busy && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} Save</Button>
+          <Button onClick={submit} disabled={busy}>{busy && <Loader2 className="h-4 w-4 mr-2 animate-spin" />} {uploadProgress !== null ? `Uploading ${uploadProgress}%` : "Save"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
