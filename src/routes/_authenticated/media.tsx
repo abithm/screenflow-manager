@@ -24,7 +24,16 @@ function MediaPage() {
   const qc = useQueryClient();
   const { data: media = [] } = useQuery({
     queryKey: ["media"],
-    queryFn: async () => (await supabase.from("media").select("*").order("created_at", { ascending: false })).data ?? [],
+    queryFn: async () => {
+      const rows = (await supabase.from("media").select("*").order("created_at", { ascending: false })).data ?? [];
+      return Promise.all(
+        rows.map(async (m) => {
+          if (!m.file_url?.startsWith("media:")) return m;
+          const { data } = await supabase.storage.from("media").createSignedUrl(m.file_url.slice(6), 3600);
+          return { ...m, file_url: data?.signedUrl ?? m.file_url };
+        }),
+      );
+    },
   });
 
   const del = useMutation({
@@ -90,7 +99,7 @@ function UploadDialog({ userId }: { userId?: string }) {
         const path = `${userId ?? "anon"}/${Date.now()}-${file.name}`;
         const { error: upErr } = await supabase.storage.from("media").upload(path, file, { upsert: false });
         if (upErr) throw upErr;
-        file_url = supabase.storage.from("media").getPublicUrl(path).data.publicUrl;
+        file_url = `media:${path}`;
         file_size = file.size;
         finalType = file.type.startsWith("video") ? "video" : file.type === "application/pdf" ? "pdf" : "image";
       }

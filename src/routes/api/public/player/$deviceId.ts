@@ -36,11 +36,20 @@ export const Route = createFileRoute("/api/public/player/$deviceId")({
           .eq("playlist_id", playlistId)
           .order("order_number");
 
-        const playlist = (items ?? []).map((it) => ({
-          type: (it.media as any)?.type ?? "image",
-          url: (it.media as any)?.file_url ?? "",
-          duration: it.display_duration,
-        }));
+        const playlist = await Promise.all(
+          (items ?? []).map(async (it) => {
+            let url = (it.media as any)?.file_url ?? "";
+            if (url.startsWith("media:")) {
+              const { data: signed } = await supabase.storage.from("media").createSignedUrl(url.slice(6), 86400);
+              url = signed?.signedUrl ?? "";
+            }
+            return {
+              type: (it.media as any)?.type ?? "image",
+              url,
+              duration: it.display_duration,
+            };
+          }),
+        );
         const version = (screen.playlists as any)?.version ?? 1;
         return Response.json({ paired: true, status: "playing", version, playlist });
 
