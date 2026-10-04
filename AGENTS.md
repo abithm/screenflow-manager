@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+- Auth layout gate uses local getSession() instead of getUser() — avoids a network round trip on every page switch; RLS still validates every data request.
