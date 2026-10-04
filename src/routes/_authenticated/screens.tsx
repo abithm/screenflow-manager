@@ -14,6 +14,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
+import { LiveViewDialog } from "@/components/live-view-dialog";
 
 export const Route = createFileRoute("/_authenticated/screens")({
   component: ScreensPage,
@@ -104,6 +105,9 @@ function ScreensPage() {
                 <dt>Last seen</dt><dd className="text-foreground text-right">{s.last_seen ? formatDistanceToNow(new Date(s.last_seen), { addSuffix: true }) : "never"}</dd>
                 <dt>App</dt><dd className="text-foreground text-right font-mono">{s.app_version ?? "—"}</dd>
               </dl>
+              {s.is_paired && (
+                <div className="mt-3"><LiveViewDialog screenId={s.id} screenName={s.screen_name} /></div>
+              )}
               {isAdmin && (
                 <div className="mt-4 space-y-2">
                   <div className="grid grid-cols-2 gap-2">
