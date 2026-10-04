@@ -148,6 +148,29 @@ function TvPlayer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, index, items]);
 
+  // report what's on screen for the dashboard live view
+  const nowKey = mode === "playing" && current ? `${index}|${current.url}` : mode;
+  useEffect(() => {
+    const playing = mode === "playing" && current;
+    fetch("/api/public/heartbeat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        device_id: deviceId,
+        now_playing_only: true,
+        now_playing: playing
+          ? {
+              url: current.url,
+              type: current.type,
+              name: decodeURIComponent(current.url.split("?")[0].split("/").pop() || current.url),
+              started_at: new Date().toISOString(),
+            }
+          : null,
+      }),
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nowKey, deviceId]);
+
   if (mode === "playing" && current) {
     return (
       <div className="fixed inset-0 bg-background">

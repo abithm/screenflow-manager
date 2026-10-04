@@ -280,6 +280,10 @@ export type Database = {
           id: string
           is_paired: boolean
           last_seen: string | null
+          now_playing_name: string | null
+          now_playing_started_at: string | null
+          now_playing_type: string | null
+          now_playing_url: string | null
           paired_at: string | null
           pairing_code: string | null
           pairing_code_expires_at: string | null
@@ -297,6 +301,10 @@ export type Database = {
           id?: string
           is_paired?: boolean
           last_seen?: string | null
+          now_playing_name?: string | null
+          now_playing_started_at?: string | null
+          now_playing_type?: string | null
+          now_playing_url?: string | null
           paired_at?: string | null
           pairing_code?: string | null
           pairing_code_expires_at?: string | null
@@ -314,6 +322,10 @@ export type Database = {
           id?: string
           is_paired?: boolean
           last_seen?: string | null
+          now_playing_name?: string | null
+          now_playing_started_at?: string | null
+          now_playing_type?: string | null
+          now_playing_url?: string | null
           paired_at?: string | null
           pairing_code?: string | null
           pairing_code_expires_at?: string | null

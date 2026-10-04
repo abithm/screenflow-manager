@@ -1,0 +1,1 @@
+ALTER TABLE public.screens ADD COLUMN now_playing_url text, ADD COLUMN now_playing_type text, ADD COLUMN now_playing_name text, ADD COLUMN now_playing_started_at timestamptz;
