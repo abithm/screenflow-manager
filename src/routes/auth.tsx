@@ -190,6 +190,9 @@ function AuthPage() {
           New accounts get the Viewer role. Ask a Super Admin to elevate.
         </p>
         <p className="text-xs text-muted-foreground text-center mt-3 space-x-4">
+          <Link to="/pricing" className="hover:text-foreground hover:underline">
+            Pricing
+          </Link>
           <Link to="/install" className="hover:text-foreground hover:underline">
             Install the TV player
           </Link>
