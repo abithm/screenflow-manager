@@ -9,37 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TvRouteImport } from './routes/tv'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as InstallRouteImport } from './routes/install'
-import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as InstallRouteImport } from './routes/install'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as TvRouteImport } from './routes/tv'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
-import { Route as AuthenticatedStoresRouteImport } from './routes/_authenticated/stores'
-import { Route as AuthenticatedScreensRouteImport } from './routes/_authenticated/screens'
-import { Route as AuthenticatedSchedulesRouteImport } from './routes/_authenticated/schedules'
-import { Route as AuthenticatedPlaylistsRouteImport } from './routes/_authenticated/playlists'
 import { Route as AuthenticatedMediaRouteImport } from './routes/_authenticated/media'
-import { Route as ApiPublicScreenshotRouteImport } from './routes/api/public/screenshot'
-import { Route as ApiPublicProofOfPlayRouteImport } from './routes/api/public/proof-of-play'
+import { Route as AuthenticatedPlaylistsRouteImport } from './routes/_authenticated/playlists'
+import { Route as AuthenticatedSchedulesRouteImport } from './routes/_authenticated/schedules'
+import { Route as AuthenticatedScreensRouteImport } from './routes/_authenticated/screens'
+import { Route as AuthenticatedStoresRouteImport } from './routes/_authenticated/stores'
 import { Route as ApiPublicHeartbeatRouteImport } from './routes/api/public/heartbeat'
-import { Route as ApiPublicPlayerDeviceIdRouteImport } from './routes/api/public/player/$deviceId'
-import { Route as ApiPublicPairStatusRouteImport } from './routes/api/public/pair/status'
+import { Route as ApiPublicProofOfPlayRouteImport } from './routes/api/public/proof-of-play'
+import { Route as ApiPublicScreenshotRouteImport } from './routes/api/public/screenshot'
 import { Route as ApiPublicPairRequestRouteImport } from './routes/api/public/pair/request'
+import { Route as ApiPublicPairStatusRouteImport } from './routes/api/public/pair/status'
+import { Route as ApiPublicPlayerDeviceIdRouteImport } from './routes/api/public/player/$deviceId'
 
-const TvRoute = TvRouteImport.update({
-  id: '/tv',
-  path: '/tv',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InstallRoute = InstallRouteImport.update({
-  id: '/install',
-  path: '/install',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -47,8 +36,19 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const InstallRoute = InstallRouteImport.update({
+  id: '/install',
+  path: '/install',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvRoute = TvRouteImport.update({
+  id: '/tv',
+  path: '/tv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
@@ -56,19 +56,9 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedStoresRoute = AuthenticatedStoresRouteImport.update({
-  id: '/stores',
-  path: '/stores',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedScreensRoute = AuthenticatedScreensRouteImport.update({
-  id: '/screens',
-  path: '/screens',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedSchedulesRoute = AuthenticatedSchedulesRouteImport.update({
-  id: '/schedules',
-  path: '/schedules',
+const AuthenticatedMediaRoute = AuthenticatedMediaRouteImport.update({
+  id: '/media',
+  path: '/media',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPlaylistsRoute = AuthenticatedPlaylistsRouteImport.update({
@@ -76,14 +66,24 @@ const AuthenticatedPlaylistsRoute = AuthenticatedPlaylistsRouteImport.update({
   path: '/playlists',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedMediaRoute = AuthenticatedMediaRouteImport.update({
-  id: '/media',
-  path: '/media',
+const AuthenticatedSchedulesRoute = AuthenticatedSchedulesRouteImport.update({
+  id: '/schedules',
+  path: '/schedules',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ApiPublicScreenshotRoute = ApiPublicScreenshotRouteImport.update({
-  id: '/api/public/screenshot',
-  path: '/api/public/screenshot',
+const AuthenticatedScreensRoute = AuthenticatedScreensRouteImport.update({
+  id: '/screens',
+  path: '/screens',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedStoresRoute = AuthenticatedStoresRouteImport.update({
+  id: '/stores',
+  path: '/stores',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiPublicHeartbeatRoute = ApiPublicHeartbeatRouteImport.update({
+  id: '/api/public/heartbeat',
+  path: '/api/public/heartbeat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicProofOfPlayRoute = ApiPublicProofOfPlayRouteImport.update({
@@ -91,14 +91,14 @@ const ApiPublicProofOfPlayRoute = ApiPublicProofOfPlayRouteImport.update({
   path: '/api/public/proof-of-play',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicHeartbeatRoute = ApiPublicHeartbeatRouteImport.update({
-  id: '/api/public/heartbeat',
-  path: '/api/public/heartbeat',
+const ApiPublicScreenshotRoute = ApiPublicScreenshotRouteImport.update({
+  id: '/api/public/screenshot',
+  path: '/api/public/screenshot',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicPlayerDeviceIdRoute = ApiPublicPlayerDeviceIdRouteImport.update({
-  id: '/api/public/player/$deviceId',
-  path: '/api/public/player/$deviceId',
+const ApiPublicPairRequestRoute = ApiPublicPairRequestRouteImport.update({
+  id: '/api/public/pair/request',
+  path: '/api/public/pair/request',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicPairStatusRoute = ApiPublicPairStatusRouteImport.update({
@@ -106,9 +106,9 @@ const ApiPublicPairStatusRoute = ApiPublicPairStatusRouteImport.update({
   path: '/api/public/pair/status',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicPairRequestRoute = ApiPublicPairRequestRouteImport.update({
-  id: '/api/public/pair/request',
-  path: '/api/public/pair/request',
+const ApiPublicPlayerDeviceIdRoute = ApiPublicPlayerDeviceIdRouteImport.update({
+  id: '/api/public/player/$deviceId',
+  path: '/api/public/player/$deviceId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -242,25 +242,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tv': {
-      id: '/tv'
-      path: '/tv'
-      fullPath: '/tv'
-      preLoaderRoute: typeof TvRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/install': {
-      id: '/install'
-      path: '/install'
-      fullPath: '/install'
-      preLoaderRoute: typeof InstallRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -270,11 +256,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+    '/install': {
+      id: '/install'
+      path: '/install'
+      fullPath: '/install'
+      preLoaderRoute: typeof InstallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv': {
+      id: '/tv'
+      path: '/tv'
+      fullPath: '/tv'
+      preLoaderRoute: typeof TvRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/': {
@@ -284,25 +284,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/stores': {
-      id: '/_authenticated/stores'
-      path: '/stores'
-      fullPath: '/stores'
-      preLoaderRoute: typeof AuthenticatedStoresRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/screens': {
-      id: '/_authenticated/screens'
-      path: '/screens'
-      fullPath: '/screens'
-      preLoaderRoute: typeof AuthenticatedScreensRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/schedules': {
-      id: '/_authenticated/schedules'
-      path: '/schedules'
-      fullPath: '/schedules'
-      preLoaderRoute: typeof AuthenticatedSchedulesRouteImport
+    '/_authenticated/media': {
+      id: '/_authenticated/media'
+      path: '/media'
+      fullPath: '/media'
+      preLoaderRoute: typeof AuthenticatedMediaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/playlists': {
@@ -312,18 +298,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlaylistsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/media': {
-      id: '/_authenticated/media'
-      path: '/media'
-      fullPath: '/media'
-      preLoaderRoute: typeof AuthenticatedMediaRouteImport
+    '/_authenticated/schedules': {
+      id: '/_authenticated/schedules'
+      path: '/schedules'
+      fullPath: '/schedules'
+      preLoaderRoute: typeof AuthenticatedSchedulesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/api/public/screenshot': {
-      id: '/api/public/screenshot'
-      path: '/api/public/screenshot'
-      fullPath: '/api/public/screenshot'
-      preLoaderRoute: typeof ApiPublicScreenshotRouteImport
+    '/_authenticated/screens': {
+      id: '/_authenticated/screens'
+      path: '/screens'
+      fullPath: '/screens'
+      preLoaderRoute: typeof AuthenticatedScreensRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/stores': {
+      id: '/_authenticated/stores'
+      path: '/stores'
+      fullPath: '/stores'
+      preLoaderRoute: typeof AuthenticatedStoresRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/heartbeat': {
+      id: '/api/public/heartbeat'
+      path: '/api/public/heartbeat'
+      fullPath: '/api/public/heartbeat'
+      preLoaderRoute: typeof ApiPublicHeartbeatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/proof-of-play': {
@@ -333,18 +333,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicProofOfPlayRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/heartbeat': {
-      id: '/api/public/heartbeat'
-      path: '/api/public/heartbeat'
-      fullPath: '/api/public/heartbeat'
-      preLoaderRoute: typeof ApiPublicHeartbeatRouteImport
+    '/api/public/screenshot': {
+      id: '/api/public/screenshot'
+      path: '/api/public/screenshot'
+      fullPath: '/api/public/screenshot'
+      preLoaderRoute: typeof ApiPublicScreenshotRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/player/$deviceId': {
-      id: '/api/public/player/$deviceId'
-      path: '/api/public/player/$deviceId'
-      fullPath: '/api/public/player/$deviceId'
-      preLoaderRoute: typeof ApiPublicPlayerDeviceIdRouteImport
+    '/api/public/pair/request': {
+      id: '/api/public/pair/request'
+      path: '/api/public/pair/request'
+      fullPath: '/api/public/pair/request'
+      preLoaderRoute: typeof ApiPublicPairRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/pair/status': {
@@ -354,11 +354,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPairStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/pair/request': {
-      id: '/api/public/pair/request'
-      path: '/api/public/pair/request'
-      fullPath: '/api/public/pair/request'
-      preLoaderRoute: typeof ApiPublicPairRequestRouteImport
+    '/api/public/player/$deviceId': {
+      id: '/api/public/player/$deviceId'
+      path: '/api/public/player/$deviceId'
+      fullPath: '/api/public/player/$deviceId'
+      preLoaderRoute: typeof ApiPublicPlayerDeviceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
