@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as InstallRouteImport } from './routes/install'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TvRouteImport } from './routes/tv'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
@@ -39,6 +40,11 @@ const AuthRoute = AuthRouteImport.update({
 const InstallRoute = InstallRouteImport.update({
   id: '/install',
   path: '/install',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
   '/install': typeof InstallRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/tv': typeof TvRoute
   '/media': typeof AuthenticatedMediaRoute
@@ -133,6 +140,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/install': typeof InstallRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/tv': typeof TvRoute
   '/media': typeof AuthenticatedMediaRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/install': typeof InstallRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/tv': typeof TvRoute
   '/_authenticated/media': typeof AuthenticatedMediaRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/install'
+    | '/pricing'
     | '/privacy'
     | '/tv'
     | '/media'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
   to:
     | '/auth'
     | '/install'
+    | '/pricing'
     | '/privacy'
     | '/tv'
     | '/media'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/install'
+    | '/pricing'
     | '/privacy'
     | '/tv'
     | '/_authenticated/media'
@@ -230,6 +242,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   InstallRoute: typeof InstallRoute
+  PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   TvRoute: typeof TvRoute
   ApiPublicHeartbeatRoute: typeof ApiPublicHeartbeatRoute
@@ -261,6 +274,13 @@ declare module '@tanstack/react-router' {
       path: '/install'
       fullPath: '/install'
       preLoaderRoute: typeof InstallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -389,6 +409,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   InstallRoute: InstallRoute,
+  PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   TvRoute: TvRoute,
   ApiPublicHeartbeatRoute: ApiPublicHeartbeatRoute,
