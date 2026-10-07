@@ -211,7 +211,7 @@ function PricingPage() {
                   ))}
                 </ul>
 
-                <div className="mt-6 pt-2">
+                <div className="mt-auto pt-6">
                   {p.cta.to ? (
                     <Link
                       to={p.cta.to}
@@ -274,18 +274,23 @@ function PricingPage() {
                 <option value="growth">Growth</option>
               </select>
             </div>
-            <p className="text-sm text-muted-foreground">
-              <span className="font-display text-xl font-semibold text-foreground">
-                {inr(monthlyTotal)}
-              </span>{" "}
-              per month
-              {annual && (
-                <>
-                  {" · "}
-                  {inr(monthlyTotal * 12)} billed annually
-                </>
-              )}
-            </p>
+            <div>
+              <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Estimated total
+              </span>
+              <p className="mt-2 text-sm text-muted-foreground">
+                <span className="font-display text-xl font-semibold text-foreground">
+                  {inr(monthlyTotal)}
+                </span>{" "}
+                per month
+                {annual && (
+                  <>
+                    {" · "}
+                    {inr(monthlyTotal * 12)} billed annually
+                  </>
+                )}
+              </p>
+            </div>
           </div>
         </section>
 
